@@ -1,0 +1,29 @@
+import java.util.Scanner;
+
+
+    // write your code here
+   // TODO, lisa siia klassi eelmises tunnis tehtud abs() meetod
+// TODO anna konsoolilt sisseloetud number funktsioonile ette ja prindi välja väljund
+    public class Main {
+        public static void main(String args[]) {
+            System.out.print("sisesta täisarv ja leian selle absoluutäärtuse:");
+            Scanner in = new Scanner(System.in);
+            int n = in.nextInt();
+            System.out.print("sisestasid:");
+            System.out.println(n);
+            System.out.print("arvu "+n+" absoluutväärtus :");
+            System.out.println(abs(n));
+
+
+        }
+        private static int abs(int x) {
+            if(x < 0){
+                return x * -1;
+            } else {
+                return x;
+            }
+        }
+    }
+
+
+

@@ -1,0 +1,30 @@
+import java.util.Scanner;
+
+
+    // write your code here
+   // TODO, lisa siia klassi eelmises tunnis tehtud abs() meetod
+// TODO anna konsoolilt sisseloetud number funktsioonile ette ja prindi välja väljund
+    public class Main {
+        public static void main(String args[]) {
+            System.out.print("leiame kahe arvu korrutustabeli.\n Sisesta esimene arv:");
+            Scanner sisse1 = new Scanner(System.in);
+            int n = sisse1.nextInt();
+            System.out.print("Sisesta teine arv:");
+            Scanner sisse2 = new Scanner(System.in);
+            int m = sisse2.nextInt();
+            System.out.print("sisestasid:"+n+"x"+m+"\n");
+            printTable(n,m);
+
+        }
+        private static void printTable(int x, int y) {
+            for (int i = 1; i <= x; i++) {
+                for (int j = 1; j <= y; j++) {
+                    System.out.print(String.format("%d ", i * j));
+                }
+                System.out.println();
+            }
+        }
+    }
+
+
+
