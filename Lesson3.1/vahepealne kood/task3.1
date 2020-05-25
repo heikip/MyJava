@@ -1,0 +1,61 @@
+public class Main {
+// jama oli sellest et esimene funtskioon alustab fib jada 0'st ja teine alusab 1'st
+    public static void main(String[] args) {
+        int number = 9;
+        System.out.println("\n"+number+"'s fibbonacci fn1 number on:"+fibonacci1(number));
+        System.out.println("\n"+number+"'s fibbonacci fn2 number on:"+fibonacci2(number));
+    }
+
+    //fib(n)= fib (n-1)+fib (n-2)
+    // leia nii mitmes arb fibonacci jadas
+    // lahenda iteratiivselt
+    private static int fibonacci1(int nr) {
+        int fib1 = 0;
+        int fib2 = 1;
+        int fib = 0;
+        System.out.print(fib1+" ");
+        System.out.print(fib2+" ");
+        for (int i = 1; i < nr; i++) {
+            fib = fib1 + fib2;
+            fib1 = fib2;
+            fib2 = fib;
+            System.out.print(String.format("%d ", fib));
+        }
+        //System.out.println(fib);
+        //return 0;
+        return fib;
+    }
+
+    // leia nii mitmes arv fibonacci jadas
+    // lahenda rekursiivselt
+    private static int fibonacci2(int nr) {
+        if (nr == 0) {
+            return 0;
+        }
+        if (nr == 1) {
+            return 1;
+        }
+        if (nr == 2) {
+            return 1;
+        }
+     //   if (nr == 3) {
+     //       return fibonacci2(2) + fibonacci2(1);
+     //   }
+        else  {
+
+            return (fibonacci2((nr - 1)) + fibonacci2(nr - 2));
+        }
+        // return 2;
+        //if (nr == 4) {
+        // return 3 ; }
+        //if (nr == 5) {
+        // return 5;}
+        // if (nr == 6) {
+        // return 8;}
+        //  else (nr > 3) {
+        // fibonacci2(4) = fibonacci2(nr - 2) + fibonacci2(nr - 1);
+        //return 0;
+        //  }return 0;
+    }
+}
+
