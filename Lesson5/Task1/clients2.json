@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Vasja",
+    "age": "40",
+    "address": "Tamme 1",
+    "cars" :
+    [
+      {
+        "regNr": "123ABC",
+        "model": "Sapakas"
+      },
+      {
+        "regNr": "125ABC",
+        "model": "Tigu"
+      }
+    ]
+  },
+  {
+    "name": "Petja",
+    "age": "30",
+    "address": "Kuuse 1",
+    "cars" :
+    [
+      {
+        "regNr": "123ABC",
+        "model": "Toyota"
+      },
+      {
+        "regNr": "127ABC",
+        "model": "Logudik"
+      }
+    ]
+  },
+  {
+    "name": "Vitja",
+    "age": "24",
+    "address": "Kase 1",
+    "cars" :
+    [
+      {
+        "regNr": "124ABC",
+        "model": "Logudik"
+      },
+      {
+        "regNr": "126ABC",
+        "model": "Käru"
+      }
+    ]
+  },
+  {
+    "name": "Masha",
+    "age": "44",
+    "address": "Männi 1",
+    "cars" :
+    [
+      {
+      "regNr": "123ABC",
+      "model": "Toyota"
+    },
+      {
+        "regNr": "127ABC",
+        "model": "Logudik"
+      }
+    ]
+  },
+  {
+    "name": "Pedro",
+    "age": "50",
+    "address": "Vahtra 1",
+    "cars" :
+    [
+      {
+        "regNr": "123ABC",
+        "model": "Toyota"
+      },
+      {
+        "regNr": "127ABC",
+        "model": "Logudik"
+      },
+      {
+        "regNr": "127ABC",
+        "model": "Logudik"
+      }
+    ]
+  }
+]
