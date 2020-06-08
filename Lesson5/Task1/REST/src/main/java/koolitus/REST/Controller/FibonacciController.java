@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FibonacciController {
 
     @GetMapping("/fibbonacci")
-    private static BigInteger fibonacci1(@RequestParam("fibnr")BigInteger nr) {
+    public  BigInteger fibonacci1(@RequestParam("fibnr")BigInteger nr) {
         BigInteger fib1 = new BigInteger("0");
         BigInteger fib2 = new BigInteger("1");
         BigInteger fib = new BigInteger("0");

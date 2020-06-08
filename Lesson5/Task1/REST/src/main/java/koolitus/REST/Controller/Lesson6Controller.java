@@ -10,22 +10,22 @@ import java.util.LinkedList;
 @RestController
 public class Lesson6Controller {
 
-    LinkedList workers = new LinkedList();
+   // LinkedList workers = new LinkedList();
 
     ///empolyees (GET)
-    @GetMapping("employees")
+  //  @GetMapping("employees")
 
     ///employee/{id} (GET)
-    @GetMapping("employee/{id}")
+ //   @GetMapping("employee/{id}")
 
     ///employee/{id} (PUT)
-    @PutMapping("employee/{id}")
+ //   @PutMapping("employee/{id}")
 
     ///employee (POST)
-    @PostMapping("/employee")
+ //   @PostMapping("/employee")
 
     ///employee/{id] (DELETE
-    @PostMapping("/employee/{id}")
+  //  @PostMapping("/employee/{id}")
 
 
 
