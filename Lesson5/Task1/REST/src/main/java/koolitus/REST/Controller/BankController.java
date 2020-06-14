@@ -44,13 +44,33 @@ public class BankController {
     }
     // withdrawMonet(String accountNr, amount) | võtab kontolt raha (vähendab kontol olevat rahasummat)
     @GetMapping("withdrawMoney")
-    public String withdrawMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
-        //return accounts.get(Account(accountNr));
-        return "0";
+    public Account withdrawMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
+        Account tempaccount = accounts.get(accountNr);
+        BigDecimal temp = tempaccount.getAmount();
+        temp = temp.subtract(amount);
+        tempaccount.setAmount(temp);
+        accounts.put(accountNr, tempaccount);
+        return accounts.get(accountNr);
     }
     // transferMoney(String account1, String account2, amount) | kanna raha esimeselt kontolt teisele kontole
     @GetMapping("transferMoney")
-    public String transferMoney(@RequestParam("accountFrom")String accountFrom, @RequestParam("accountTo")String accountTo, @RequestParam("amount") int amount){
-        return "0";
+    public Account transferMoney(@RequestParam("accountFrom")String accountFrom, @RequestParam("accountTo")String accountTo, @RequestParam("amount") BigDecimal amount){
+        Account accFrom = accounts.get(accountFrom);
+        Account accTo = accounts.get(accountTo);
+
+        BigDecimal moneyFrom = accFrom.getAmount();
+        moneyFrom = moneyFrom.subtract(amount);
+
+        BigDecimal moneyTo = accTo.getAmount();
+        moneyTo = moneyTo.add(amount);
+
+        accFrom.setAmount(moneyFrom);
+        accTo.setAmount(moneyTo);
+
+        accounts.put(accountFrom, accFrom);
+        accounts.put(accountTo, accTo);
+
+        return accounts.get(accountFrom);
+
     }
 }
