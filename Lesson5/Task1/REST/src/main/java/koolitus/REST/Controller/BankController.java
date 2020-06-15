@@ -1,7 +1,11 @@
 package koolitus.REST.Controller;
 import koolitus.REST.Account;
 
+import koolitus.REST.MyException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -9,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @RequestMapping("mybank")
 @RestController()
@@ -48,6 +53,11 @@ public class BankController {
         Account tempaccount = accounts.get(accountNr);
         BigDecimal temp = tempaccount.getAmount();
         temp = temp.subtract(amount);
+        if (temp.intValue()<0){
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
+            //oma exception throw myexception
+            throw new MyException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
+                    }
         tempaccount.setAmount(temp);
         accounts.put(accountNr, tempaccount);
         return accounts.get(accountNr);
@@ -57,10 +67,11 @@ public class BankController {
     public Account transferMoney(@RequestParam("accountFrom")String accountFrom, @RequestParam("accountTo")String accountTo, @RequestParam("amount") BigDecimal amount){
         Account accFrom = accounts.get(accountFrom);
         Account accTo = accounts.get(accountTo);
-
         BigDecimal moneyFrom = accFrom.getAmount();
         moneyFrom = moneyFrom.subtract(amount);
-
+        if (moneyFrom.intValue()<0){
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
+        }
         BigDecimal moneyTo = accTo.getAmount();
         moneyTo = moneyTo.add(amount);
 
@@ -71,6 +82,6 @@ public class BankController {
         accounts.put(accountTo, accTo);
 
         return accounts.get(accountFrom);
-
     }
+
 }
