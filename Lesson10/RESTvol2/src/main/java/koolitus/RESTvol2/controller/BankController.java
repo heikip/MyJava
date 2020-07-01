@@ -1,16 +1,11 @@
 package koolitus.RESTvol2.controller;
 import koolitus.RESTvol2.Account;
+import koolitus.RESTvol2.AccountRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,26 +17,35 @@ import java.util.Map;
 public class BankController {
     // TODO
     @Autowired
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     // kasuta staatilist muutujat andmete salvestamiseks
     ///private static int counter;
-    private static Map<String, Account> accounts = new HashMap();
+    private Map<String, Account> accounts = new HashMap();
     //private static Map<Integer, BigInteger> Amounts = new HashMap();
     //private static Map<String, BigInteger>
 
     // defineeri rest enpoindid
     // createAccount(String accountNr) | loob uue konto etteantud konto numbriga
     @GetMapping("createAccount")
-    public Account createAccount(@RequestParam("accountNr")String accountNr){
-       accounts.put(accountNr, new Account(accountNr, new BigDecimal("0")));
+    private Account createAccount(@RequestParam("accountNr")String accountNr){
+  /*     accounts.put(accountNr, new Account(accountNr, new BigDecimal("0")));
+
+        String sql= "INSERT INTO accounts (account_nr);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("accountNr", accountNr);
+        List<Account> resultList = namedParameterJdbcTemplate.query(sql, paramMap, new ObjectRowMapper());*/
       return accounts.get(accountNr);
     }
     // getAccount(String accountNr) | tagasta kui palju raha on vastaval kontol
     @GetMapping("getAccount")
-        public Account getAccount(@RequestParam("accountNr")String accountNr){
-        String sql= "SELECT * FROM accounts WHERE accountNr= :accountNr";
-        jdbcTemplate.query();
-        return accounts.get(accountNr);
+        private List getAccount(@RequestParam("accountNr")String accountNr){
+        String sql= "SELECT * FROM accounts WHERE account_nr = :accountNr";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("accountNr", accountNr);
+        List<Account> resultList = namedParameterJdbcTemplate.query(sql, paramMap, new AccountRowMapper());
+       return resultList;
+        // jdbcTemplate.query();
+       // return accounts.get(accountNr);
     }
 
     // depositMoney(String accountNr, amount) | kannab loodud kontole raha (suurendab kontoga seotud raha muutujat)
