@@ -1,0 +1,20 @@
+databaseChangeLog:
+  -  preConditions:
+  -  runningAs:
+       username:  liquibase
+
+  -  changeSet:
+       id:  data 1
+       author:  heikip
+       changes:
+           - sql: insert into customers (first_name, last_name, email) values ('Big', 'Money', 'many@money.com')
+           - sql: insert into customers (first_name, last_name, email) values ('Small', 'Money', 'nomoney@poor.broke')
+           - sql: insert into customers (first_name, last_name, email) values ('Some', 'Money', 'work@slave.now')
+  -  changeSet:
+       id:  data 2
+       author:  heikip
+       changes:
+           - sql: insert into accounts (account_nr, customer_id, amount) values ('EE100',(Select id from customers where first_name = 'Big') , 500)
+           - sql: insert into accounts (account_nr, customer_id, amount) values ('EE101',(Select id from customers where first_name = 'Big') , 500)
+           - sql: insert into accounts (account_nr, customer_id, amount) values ('EE102',(Select id from customers where first_name = 'Small') , 5)
+           - sql: insert into accounts (account_nr, customer_id, amount) values ('EE103',(Select id from customers where first_name = 'Some') , 50)

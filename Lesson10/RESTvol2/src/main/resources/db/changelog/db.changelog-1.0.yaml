@@ -1,2 +1,81 @@
 databaseChangeLog:
-  - chanchangeSet:
+  -  preConditions:
+  -  runningAs:
+       username:  liquibase
+
+  -  changeSet:
+       id:  1
+       author:  heikip
+       changes:
+         -  createTable:
+              tableName:  customers
+              columns:
+                -  column:
+                     name: id
+                     type: bigint
+                     autoIncrement:  true
+                     constraints:
+                         primaryKey:  true
+                         primaryKeyName: customers_pk
+                         nullable:  false
+                -  column:
+                     name:  first_name
+                     type:  text
+                -  column:
+                     name:  last_name
+                     type:  text
+                -  column:
+                     name:  email
+                     type:  text
+
+  -  changeSet:
+       id:  2
+       author:  heikip
+       changes:
+         -  createTable:
+              tableName:  accounts
+              columns:
+                -  column:
+                     name:  id
+                     type:  bigint
+                     autoIncrement:  true
+                     constraints:
+                       primaryKey:  true
+                       primaryKeyName: accounts_pk
+                       nullable:  false
+                -  column:
+                     name:  account_nr
+                     type:  text
+                -  column:
+                     name:  amount
+                     type:  bigint
+                -  column:
+                     name:  customer_id
+                     type:  bigint
+                     constraints:
+                       foreignKeyName: accounts_customers_id_fk
+                       references: customers(id)
+  -  changeSet:
+       id:  3
+       author:  heikip
+       changes:
+         -  createTable:
+              tableName:  transaction_history
+              columns:
+                -  column:
+                     name:  transaction_id
+                     type:  bigint
+                     autoIncrement:  true
+                     constraints:
+                       primaryKey:  true
+                       primaryKeyName: transaction_history_pk
+                       nullable:  false
+                -   column:
+                      name:  account_from
+                      type:  bigint
+                -   column:
+                      name:  account_to
+                      type:  bigint
+                -   column:
+                      name:  amount
+                      type:  bigint

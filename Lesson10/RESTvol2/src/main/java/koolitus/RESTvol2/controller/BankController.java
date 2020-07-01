@@ -47,7 +47,16 @@ public class BankController {
         // jdbcTemplate.query();
        // return accounts.get(accountNr);
     }
-
+    @GetMapping("getCustomerAccounts")
+    private List getCustomerAccounts(@RequestParam("email")String email){
+        String sql= "SELECT * FROM accounts WHERE customer_id = (select id from customers where email = :email)";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("email", email);
+        List<Account> resultList = namedParameterJdbcTemplate.query(sql, paramMap, new AccountRowMapper());
+        return resultList;
+        // jdbcTemplate.query();
+        // return accounts.get(accountNr);
+    }
     // depositMoney(String accountNr, amount) | kannab loodud kontole raha (suurendab kontoga seotud raha muutujat)
 /*
 
