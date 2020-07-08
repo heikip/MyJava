@@ -1,9 +1,6 @@
 package koolitus.RESTvol2.controller;
-import koolitus.RESTvol2.Account;
-import koolitus.RESTvol2.AccountRowMapper;
-import koolitus.RESTvol2.Customer;
+import koolitus.RESTvol2.*;
 
-import koolitus.RESTvol2.CustomerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,6 +23,9 @@ public class BankController {
     // TODO
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    private AccountService accountService;
     // kasuta staatilist muutujat andmete salvestamiseks
     ///private static int counter;
     private Map<String, Account> accounts = new HashMap();
@@ -89,11 +89,13 @@ public class BankController {
     // getAccount(String accountNr) | tagasta kui palju raha on vastaval kontol
     @GetMapping("getAccount")
         private Account getAccount(@RequestParam("accountNr")String accountNr){
-        String sql= "SELECT * FROM accounts WHERE account_nr = :accountNr";
+        return accountService.getAccount(accountNr);
+
+        /* String sql= "SELECT * FROM accounts WHERE account_nr = :accountNr";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("accountNr", accountNr);
         List<Account> resultList = namedParameterJdbcTemplate.query(sql, paramMap, new AccountRowMapper());
-       return resultList.get(0);
+       return resultList(0);*/
         // jdbcTemplate.query();
        // return accounts.get(accountNr);
     }
@@ -111,42 +113,35 @@ public class BankController {
 
 
     @GetMapping("depositMoney")
-    public Account depositMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
-        Account tempAccount = getAccount(accountNr);
+    private void depositMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
+        accountService.depositMoney(accountNr, amount);
+        /*        Account tempAccount = getAccount(accountNr);
         BigDecimal temp = tempAccount.getAmount();
         temp = temp.add(amount);
-        tempAccount.setAmount(temp);
+        tempAccount.setAmount(temp);*/
        // accounts.put(accountNr, tempaccount);
-        Map<String, Object> paramMap = new HashMap<>();
+/*        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("accountNr", tempAccount.getAccountNr());
         paramMap.put("amount", tempAccount.getAmount());
         String sql = "update accounts set amount = :amount where account_nr = :accountNr";
-        namedParameterJdbcTemplate.update(sql, paramMap);
-    return tempAccount;
+        namedParameterJdbcTemplate.update(sql, paramMap);*/
     }
 
 
     // withdrawMonet(String accountNr, amount) | võtab kontolt raha (vähendab kontol olevat rahasummat)
     @GetMapping("withdrawMoney")
-    public Account withdrawMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
-        Account tempAccount = getAccount(accountNr);
-        BigDecimal temp = tempAccount.getAmount();
-        temp = temp.subtract(amount);
-        if (temp.intValue()<0){
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
-            //oma exception throw myexception
-            //throw new MyException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
-                    }
-        tempAccount.setAmount(temp);
+    private void withdrawMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
+        accountService.withdrawMoney(accountNr, amount);
 
         //accounts.put(accountNr, tempaccount);
-        Map<String, Object> paramMap = new HashMap<>();
+       /* Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("accountNr", tempAccount.getAccountNr());
         paramMap.put("amount", tempAccount.getAmount());
         String sql = "update accounts set amount = :amount where account_nr = :accountNr";
-        namedParameterJdbcTemplate.update(sql, paramMap);
-        return tempAccount;
+        namedParameterJdbcTemplate.update(sql, paramMap);*/
+        //return tempAccount;
     }
+
 
     // transferMoney(String account1, String account2, amount) | kanna raha esimeselt kontolt teisele kontole
     @GetMapping("transferMoney")
