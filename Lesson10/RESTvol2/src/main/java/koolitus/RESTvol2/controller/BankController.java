@@ -78,8 +78,7 @@ public class BankController {
             paramMap2.put("accountNr", freshAccount.getAccountNr());
             paramMap2.put("customerId", freshAccount.getCustomerId());
             String sql2 = "insert into accounts (account_nr, customer_id, amount) values (:accountNr, :customerId, 0)";
-            //insert into accounts (account_nr, customer_id, amount) values ('EE100',(Select id from customers where first_name = 'Big') , 500)
-            namedParameterJdbcTemplate.update(sql2, paramMap2);
+             namedParameterJdbcTemplate.update(sql2, paramMap2);
             //  String sql= "INSERT INTO accounts (account_nr)";
             // Map<String, Object> paramMap = new HashMap<>();
             //paramMap.put("accountNr", accountNr);
@@ -122,32 +121,38 @@ public class BankController {
         paramMap.put("accountNr", tempAccount.getAccountNr());
         paramMap.put("amount", tempAccount.getAmount());
         String sql = "update accounts set amount = :amount where account_nr = :accountNr";
-        //insert into accounts (account_nr, customer_id, amount) values ('EE100',(Select id from customers where first_name = 'Big') , 500)
         namedParameterJdbcTemplate.update(sql, paramMap);
-    return accounts.get(accountNr);
+    return tempAccount;
     }
 
-    /*
+
     // withdrawMonet(String accountNr, amount) | võtab kontolt raha (vähendab kontol olevat rahasummat)
     @GetMapping("withdrawMoney")
     public Account withdrawMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
-        Account tempaccount = accounts.get(accountNr);
-        BigDecimal temp = tempaccount.getAmount();
+        Account tempAccount = getAccount(accountNr);
+        BigDecimal temp = tempAccount.getAmount();
         temp = temp.subtract(amount);
         if (temp.intValue()<0){
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
             //oma exception throw myexception
             //throw new MyException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
                     }
-        tempaccount.setAmount(temp);
-        accounts.put(accountNr, tempaccount);
-        return accounts.get(accountNr);
+        tempAccount.setAmount(temp);
+
+        //accounts.put(accountNr, tempaccount);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("accountNr", tempAccount.getAccountNr());
+        paramMap.put("amount", tempAccount.getAmount());
+        String sql = "update accounts set amount = :amount where account_nr = :accountNr";
+        namedParameterJdbcTemplate.update(sql, paramMap);
+        return tempAccount;
     }
+
     // transferMoney(String account1, String account2, amount) | kanna raha esimeselt kontolt teisele kontole
     @GetMapping("transferMoney")
     public Account transferMoney(@RequestParam("accountFrom")String accountFrom, @RequestParam("accountTo")String accountTo, @RequestParam("amount") BigDecimal amount){
-        Account accFrom = accounts.get(accountFrom);
-        Account accTo = accounts.get(accountTo);
+        Account accFrom = getAccount(accountFrom);
+        Account accTo = getAccount(accountTo);
         BigDecimal moneyFrom = accFrom.getAmount();
         moneyFrom = moneyFrom.subtract(amount);
         if (moneyFrom.intValue()<0){
@@ -159,11 +164,21 @@ public class BankController {
         accFrom.setAmount(moneyFrom);
         accTo.setAmount(moneyTo);
 
-        accounts.put(accountFrom, accFrom);
-        accounts.put(accountTo, accTo);
+        //accounts.put(accountFrom, accFrom);
+        Map<String, Object> paramMapFrom = new HashMap<>();
+        paramMapFrom.put("accountNr", accFrom.getAccountNr());
+        paramMapFrom.put("amount", accFrom.getAmount());
+        String sqlfrom = "update accounts set amount = :amount where account_nr = :accountNr";
+        namedParameterJdbcTemplate.update(sqlfrom, paramMapFrom);
 
-        return accounts.get(accountFrom);
+        //accounts.put(accountTo, accTo);
+        Map<String, Object> paramMapTo = new HashMap<>();
+        paramMapTo.put("accountNr", accTo.getAccountNr());
+        paramMapTo.put("amount", accTo.getAmount());
+        String sqlto = "update accounts set amount = :amount where account_nr = :accountNr";
+        namedParameterJdbcTemplate.update(sqlto, paramMapTo);
+        return accFrom;
     }
-*/
+
 
 }
