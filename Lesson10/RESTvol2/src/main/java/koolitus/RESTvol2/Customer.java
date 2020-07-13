@@ -1,9 +1,14 @@
 package koolitus.RESTvol2;
 
-public class Customer {
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
+public class Customer {
+    @Size(min = 1, max = 100)
     private String firstName;
+    @Size(min = 1, max = 100)
     private String lastName;
+    @Email
     private String email;
 
     public Customer (String firstName, String lastName, String email){

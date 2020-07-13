@@ -1,11 +1,13 @@
 package koolitus.RESTvol2;
 
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 
 public class Account {
 
+    @Size(min = 5, max = 10)
     private String accountNr;
     private BigDecimal amount;
     private BigInteger customerId;
