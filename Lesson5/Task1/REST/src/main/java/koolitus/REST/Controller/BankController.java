@@ -56,7 +56,7 @@ public class BankController {
         if (temp.intValue()<0){
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
             //oma exception throw myexception
-            throw new MyException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
+          //  throw new MyException(HttpStatus.I_AM_A_TEAPOT, "Error not enough dinero");
                     }
         tempaccount.setAmount(temp);
         accounts.put(accountNr, tempaccount);

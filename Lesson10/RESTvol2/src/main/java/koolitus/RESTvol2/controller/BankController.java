@@ -17,31 +17,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 @RequestMapping("mybank")
 @RestController()
-@Validated
 public class BankController {
     // TODO
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+  //  @Autowired
+   // private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final AccountService accountService;
 
-    @Autowired
-    private AccountService accountService;
     // kasuta staatilist muutujat andmete salvestamiseks
     ///private static int counter;
     private Map<String, Account> accounts = new HashMap();
     //private static Map<Integer, BigInteger> Amounts = new HashMap();
     //private static Map<String, BigInteger>
 
+
+    public BankController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
     // defineeri rest enpoindid
     // createAccount(String accountNr) | loob uue konto etteantud konto numbriga
-    @PostMapping(path = "/createCustomer",consumes = "applicaton/json", produces = "application/json")
-    private Customer createCustomer(@Valid @RequestBody String firstName, @RequestBody String lastName, @RequestBody String email){
-
+    @PostMapping(path = "/createCustomer")
+    private Customer createCustomer(@Valid @RequestBody Customer customer){
         //Customer freshCustomer = new Customer(firstName, lastName, email);
-        return accountService.createCustomer(firstName, lastName, email);
+        return accountService.createCustomer(customer.getFirstName(), customer.getLastName(), customer.getEmail());
         //System.out.println(freshCustomer);
         //List<Account> resultList = namedParameterJdbcTemplate.query(sql, paramMap, new ObjectRowMapper());
 /*        Map<String, String> paramMap = new HashMap<>();
@@ -53,7 +53,7 @@ public class BankController {
         namedParameterJdbcTemplate.update(sql, paramMap);*/
       //  return freshCustomer;
     }
-    @PostMapping(path="createAccount",consumes = "applicaton/json", produces = "application/json")
+    @PostMapping(path="createAccount", consumes = "applicaton/json", produces = "application/json")
     private Account createAccount(@RequestParam("accountNr")String accountNr ,@RequestParam("email")String email, @RequestParam("customerId")BigInteger customerId){
         //accounts.put(accountNr, new Account(accountNr, new BigDecimal("0")));
         //kas selline kasutaja on üldse olemas otsime eaili järgi.

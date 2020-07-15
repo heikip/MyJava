@@ -1,5 +1,6 @@
 package koolitus.REST.Controller;
 
+import koolitus.REST.MathService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,12 +13,13 @@ import java.math.RoundingMode;
 @RequestMapping
 @RestController()
 public class MathController {
-
+    public MathService mathService;
     // TODO, loo endpoint, mis sisaldaks GET teenuseid
     // *multiply (korruta 2 arvu)
     @GetMapping("mul")
     public BigDecimal multiply(@RequestParam("a")BigDecimal a, @RequestParam("b") BigDecimal b){
-        return a.multiply(b);
+        //return a.multiply(b);
+        return mathService.multiply(a,b);
     }
     // *divide (jaga 2 arvu)
     @GetMapping("div")
