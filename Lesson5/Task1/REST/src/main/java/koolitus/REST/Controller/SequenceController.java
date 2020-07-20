@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import koolitus.REST.SequenceService;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping("sequence")
 @RestController()
 public class SequenceController {
+    public SequenceService sequenceService;
     // TODO
     // luua endpoint mis leiab 3n+1 jada pikkuse sisestatud numbrist-- eelnevatest ülessannetest
     @GetMapping("seq")
@@ -54,6 +56,10 @@ public class SequenceController {
 
     // luua endpoint mis leiab kas sisestatud arv on algarv või mitte
     @GetMapping("/isPrime")
+    public boolean isPrime (@RequestParam("a")int arv) {
+        return sequenceService.isPrime(arv);
+    }
+/*
     public boolean isPrime(@RequestParam("a")int arv) {
         int jagaja = 2;
 /// kui arvestada ka sellega et kui 2'ga juba ei jagu, siis pole mõtet kontrollida, kas 4,6,8,10 jne paarisarvuga jagub
@@ -65,5 +71,6 @@ public class SequenceController {
         }
         return true;
     }
+*/
 
 }
