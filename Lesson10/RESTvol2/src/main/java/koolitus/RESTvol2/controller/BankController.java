@@ -38,7 +38,7 @@ public class BankController {
 
     // defineeri rest enpoindid
     // createAccount(String accountNr) | loob uue konto etteantud konto numbriga
-    @PostMapping(path = "/createCustomer")
+    @PostMapping("createCustomer")
     private Customer createCustomer(@Valid @RequestBody Customer customer){
         //Customer freshCustomer = new Customer(firstName, lastName, email);
         return accountService.createCustomer(customer.getFirstName(), customer.getLastName(), customer.getEmail());
@@ -53,8 +53,14 @@ public class BankController {
         namedParameterJdbcTemplate.update(sql, paramMap);*/
       //  return freshCustomer;
     }
-    @PostMapping(path="createAccount", consumes = "applicaton/json", produces = "application/json")
-    private Account createAccount(@RequestParam("accountNr")String accountNr ,@RequestParam("email")String email, @RequestParam("customerId")BigInteger customerId){
+    @PostMapping("createAccount")
+    private Account createAccount(@Valid @RequestBody Account account, @RequestParam ("email")String email){
+
+        return accountService.createAccount(account.getAccountNr(), email, account.getCustomerId());
+        //return accountService.createAccount(accountNr, email, customerId) ;
+
+
+    }
         //accounts.put(accountNr, new Account(accountNr, new BigDecimal("0")));
         //kas selline kasutaja on üldse olemas otsime eaili järgi.
 /*        String sql= "select id from customers where email = :email";
@@ -90,9 +96,7 @@ public class BankController {
             // Map<String, Object> paramMap = new HashMap<>();
             //paramMap.put("accountNr", accountNr);
             // List<Account> resultList = namedParameterJdbcTemplate.query(sql, paramMap, new ObjectRowMapper());
-            return accountService.createAccount(accountNr, email, customerId) ;
 
-    }
     // getAccount(String accountNr) | tagasta kui palju raha on vastaval kontol
     @GetMapping("getAccount")
         private Account getAccount(@RequestParam("accountNr")String accountNr){
@@ -119,10 +123,11 @@ public class BankController {
     }
     // depositMoney(String accountNr, amount) | kannab loodud kontole raha (suurendab kontoga seotud raha muutujat)
 
+    @PutMapping("/depositMoney/{accountNr}")
+        private void depositMoney (@PathVariable(value = "accountNr") String accountNr, @Valid @RequestBody Account account) {
 
-    @GetMapping("depositMoney")
-    private void depositMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
-        accountService.depositMoney(accountNr, amount);
+        accountService.depositMoney(accountNr, account.getAmount());
+
         /*        Account tempAccount = getAccount(accountNr);
         BigDecimal temp = tempAccount.getAmount();
         temp = temp.add(amount);
@@ -137,9 +142,9 @@ public class BankController {
 
 
     // withdrawMonet(String accountNr, amount) | võtab kontolt raha (vähendab kontol olevat rahasummat)
-    @GetMapping("withdrawMoney")
-    private void withdrawMoney(@RequestParam("accountNr")String accountNr, @RequestParam("amount") BigDecimal amount){
-        accountService.withdrawMoney(accountNr, amount);
+    @PutMapping("/withdrawMoney/{accountNr}")
+    private void withdrawMoney(@PathVariable(value = "accountNr") String accountNr, @Valid @RequestBody Account account){
+        accountService.withdrawMoney(accountNr, account.getAmount());
         //accounts.put(accountNr, tempaccount);
        /* Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("accountNr", tempAccount.getAccountNr());
@@ -149,9 +154,9 @@ public class BankController {
         //return tempAccount;
     }
     // transferMoney(String account1, String account2, amount) | kanna raha esimeselt kontolt teisele kontole
-    @GetMapping("transferMoney")
-    public void transferMoney(@RequestParam("accountFrom")String accountFrom, @RequestParam("accountTo")String accountTo, @RequestParam("amount") BigDecimal amount){
-        accountService.transferMoney(accountFrom, accountTo, amount);
+    @PutMapping("/transferMoney/{accountNr}")
+    public void transferMoney(@PathVariable(value = "accountNr")String accountFrom, @Valid @RequestBody Account account){
+        accountService.transferMoney(accountFrom, account.getAccountNr(), account.getAmount());
         /*        Account accFrom = getAccount(accountFrom);
         Account accTo = getAccount(accountTo);
         BigDecimal moneyFrom = accFrom.getAmount();

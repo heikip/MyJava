@@ -8,6 +8,7 @@
 		<version>2.3.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<!-- kui tahta .war genereerida//<packaging>war</packaging>-->
 	<groupId>koolitus</groupId>
 	<artifactId>RESTvol2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
