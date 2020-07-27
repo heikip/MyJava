@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,18 @@ public class AccountRepository {
         String sql2 = "insert into accounts (account_nr, customer_id, amount) values (:accountNr, :customerId, 0)";
         namedParameterJdbcTemplate.update(sql2, paramMap2);
         return queryAccount(accountNr);
+    }
+    public void updateTransactionHistory(String accountFrom, String accountTo, BigDecimal amount, BigDecimal amountChange){
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("account_from", accountFrom);
+        paramMap.put("account_to", accountTo);
+        paramMap.put("amount", amount);
+        paramMap.put("amount_change", amountChange);
+        paramMap.put("timestamp", LocalDateTime.now());
+        //, "lastName", freshCustomer.getLastName(), "email", freshCustomer.getEmail()
+        String sql = "insert into transaction_history (account_from, account_to, amount, amount_change, timestamp) values (:account_from, :account_to, :amount, :amount_change, :timestamp)";
+        namedParameterJdbcTemplate.update(sql, paramMap);
+
     }
 
 }

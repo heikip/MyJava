@@ -19,12 +19,14 @@ public class AccountService {
     public Account getAccount(String accountNr){
         return accountRepository.queryAccount(accountNr);
     }
+
     public void depositMoney(String accountNr, BigDecimal amount){
         Account tempAccount = getAccount(accountNr);
         BigDecimal temp = tempAccount.getAmount();
         temp = temp.add(amount);
         tempAccount.setAmount(temp);
         accountRepository.updateAccount(tempAccount.getAccountNr(), tempAccount.getAmount());
+        accountRepository.updateTransactionHistory(tempAccount.getAccountNr(),"deposit", tempAccount.getAmount(), amount);
     }
     public void withdrawMoney(String accountNr, BigDecimal amount) {
         Account tempAccount = getAccount(accountNr);
@@ -37,6 +39,7 @@ public class AccountService {
         }
         tempAccount.setAmount(temp);
         accountRepository.updateAccount(tempAccount.getAccountNr(), tempAccount.getAmount());
+        accountRepository.updateTransactionHistory(tempAccount.getAccountNr(),"withdraw", tempAccount.getAmount(), amount);
     }
     public void transferMoney(String accountFrom, String accountTo, BigDecimal amount){
         Account accFrom = getAccount(accountFrom);
@@ -53,6 +56,7 @@ public class AccountService {
         accTo.setAmount(moneyTo);
         accountRepository.updateAccount(accFrom.getAccountNr(), accFrom.getAmount());
         accountRepository.updateAccount(accTo.getAccountNr(), accTo.getAmount());
+        accountRepository.updateTransactionHistory(accFrom.getAccountNr(),accTo.getAccountNr(), accFrom.getAmount(), amount);
     }
     public List getCustomerAccounts(String email){
         return accountRepository.getCustomerAccounts(email);
