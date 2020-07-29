@@ -2,9 +2,11 @@ package koolitus.RESTvol2;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.naming.Name;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -15,7 +17,13 @@ import java.util.Map;
 @Repository
 public class AccountRepository {
     @Autowired
+    //private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Qualifier("namedjdbctemplate1")
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    @Qualifier("namedjdbctemplate2")
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate2;
 
     public Account queryAccount(String accountNr) {
         String sql = "SELECT * FROM accounts WHERE account_nr = :accountNr";
@@ -80,6 +88,7 @@ public class AccountRepository {
         //, "lastName", freshCustomer.getLastName(), "email", freshCustomer.getEmail()
         String sql = "insert into transaction_history (account_from, account_to, amount, amount_change, timestamp) values (:account_from, :account_to, :amount, :amount_change, :timestamp)";
         namedParameterJdbcTemplate.update(sql, paramMap);
+        namedParameterJdbcTemplate2.update(sql, paramMap);
 
     }
 
